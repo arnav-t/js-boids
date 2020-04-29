@@ -10,6 +10,7 @@ export default class BoidSystem {
         this.boid_radius = 30;
         this.boids = [];
         this.mouse = new Vector();
+        this._mouse_el = docroot.getElementById('mouse');
         this.docroot = docroot;
         this.docroot.addEventListener('click', this.append.bind(this));
         this.docroot.addEventListener('mousemove', this.update_mouse.bind(this));
@@ -18,6 +19,8 @@ export default class BoidSystem {
     update_mouse(event) {
         this.mouse.x = event.clientX;
         this.mouse.y = event.clientY;
+        this._mouse_el.style.left = event.clientX + 'px';
+        this._mouse_el.style.top = event.clientY + 'px';
     }
     append(event) {
         let pos = new Vector(event.clientX, event.clientY);
