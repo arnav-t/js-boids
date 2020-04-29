@@ -6,6 +6,10 @@ export default class Boid {
         this.vel = new Vector();
         this._element = docroot.createElement('div');
         this._element.classList.add('boid');
+        let random_col = `hsl(${Math.floor(Math.random()*360)},100%,50%)`;
+        let filter = `drop-shadow(0px 0px 10px ${random_col})`;
+        this._element.style.borderBottomColor = random_col;
+        this._element.style.filter = filter;
         docroot.body.appendChild(this._element);
         this.draw();
     }
