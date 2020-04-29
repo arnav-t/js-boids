@@ -9,9 +9,15 @@ export default class BoidSystem {
         this.flock_radius = 200;
         this.boid_radius = 30;
         this.boids = [];
+        this.mouse = new Vector();
         this.docroot = docroot;
         this.docroot.addEventListener('click', this.append.bind(this));
+        this.docroot.addEventListener('mousemove', this.update_mouse.bind(this));
         this.tick();
+    }
+    update_mouse(event) {
+        this.mouse.x = event.clientX;
+        this.mouse.y = event.clientY;
     }
     append(event) {
         let pos = new Vector(event.clientX, event.clientY);
@@ -20,6 +26,11 @@ export default class BoidSystem {
     }
     tick() {
         for (let boid of this.boids) {
+            // Chase the mouse
+            let mf = this.chase_mouse(boid);
+            mf.mul(1/200.0);
+            boid.update_vel = mf;
+
             // Move towards percieved center
             let pc = this.percieved_center(boid);
             pc.mul(1/400.0);
@@ -50,6 +61,13 @@ export default class BoidSystem {
         this.flock_time += 1;
         this.flock_time %= 1000;
         setTimeout(this.tick.bind(this), this.tickrate);
+    }
+    chase_mouse(boid) {
+        let mf = new Vector();
+        if (Vector.distance(boid.pos, this.mouse) < this.flock_radius) {
+            mf = Vector.subtract(this.mouse, boid.pos);
+        }
+        return mf;
     }
     percieved_center(boid) {
         let pc = new Vector();
