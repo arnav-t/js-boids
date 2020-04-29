@@ -13,13 +13,18 @@ export default class Boid {
         docroot.body.appendChild(this._element);
         this.draw();
     }
-    update_pos() {
+    add_vel() {
         this.pos = Vector.add(this.vel, this.pos);
+    }
+    set update_pos(p) {
+        this.pos = Vector.add(this.pos, p);
     }
     set update_vel(v) {
         this.vel = Vector.add(this.vel, v);
     }
     draw() {
+        let angle = Math.atan2(this.vel.y, this.vel.x)*180/Math.PI;
+        this._element.style.transform = `rotate(${angle}deg)`;
         this._element.style.left = this.pos.x + 'px';
         this._element.style.top = this.pos.y + 'px';
     }
