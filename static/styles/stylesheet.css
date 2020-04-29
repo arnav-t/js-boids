@@ -11,5 +11,6 @@
 
 /* || Body */
 body {
+    overflow: hidden;
     background: linear-gradient(to right, #303030, #222222, #272727);
 }
