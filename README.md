@@ -3,3 +3,5 @@
 ![boids](https://i.imgur.com/RdPg4XM.png "Boids")        
 Boids display "natural" movement emerging from a few simple rules. The movement of Boids can be characterized as either chaotic (splitting groups and wild behaviour) or orderly. Unexpected behaviours, such as splitting flocks and reuniting after avoiding obstacles, can be considered emergent.            
 This demo is written in JavaScript.
+## Usage
+Click anywhere on the screen to create a Boid.
