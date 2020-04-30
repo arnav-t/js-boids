@@ -3,8 +3,7 @@ import Vector from './vector.js';
 
 export default class BoidSystem {
     constructor(docroot) {
-        this.flock_time = 0;
-        this.flock_time_ratio = 0.8;
+        this.flock_time_ratio = 0.95;
         this.tickrate = 20;
         this.flock_radius = 200;
         this.boid_radius = 30;
@@ -41,7 +40,7 @@ export default class BoidSystem {
 
             // Avoid collisions
             let av = this.avoid(boid);
-            av.mul(1/(40.0*(this.flock_time > 1000*this.flock_time_ratio ? 8 : 1)));
+            av.mul(1/(40.0*(boid.lifetime > 1000*this.flock_time_ratio ? 8 : 1)));
             boid.update_vel = av;
 
             // Move with flock
@@ -57,12 +56,12 @@ export default class BoidSystem {
             this.bound(boid);
         }
         for (let boid of this.boids) {
+            boid.lifetime += 1;
+            boid.lifetime %= 1000;
             // Update positions and redraw
             boid.add_vel();
             boid.draw();
         }
-        this.flock_time += 1;
-        this.flock_time %= 1000;
         setTimeout(this.tick.bind(this), this.tickrate);
     }
     chase_mouse(boid) {
@@ -74,7 +73,7 @@ export default class BoidSystem {
     }
     percieved_center(boid) {
         let pc = new Vector();
-        if (this.boids.length < 2 || this.flock_time > 1000*this.flock_time_ratio) return pc;
+        if (this.boids.length < 2 || boid.lifetime > 1000*this.flock_time_ratio) return pc;
         let n = 0;
         for (let b of this.boids) {
             if (b !== boid) {
@@ -94,7 +93,7 @@ export default class BoidSystem {
         if (this.boids.length < 2) return av;
         for (let b of this.boids) {
             if (b !== boid) {
-                if (Vector.distance(boid.pos, b.pos) < this.boid_radius*(this.flock_time > 1000*this.flock_time_ratio ? 8 : 1)) {
+                if (Vector.distance(boid.pos, b.pos) < this.boid_radius*(boid.lifetime > 1000*this.flock_time_ratio ? 4 : 1)) {
                     av = Vector.subtract(av, Vector.subtract(b.pos, boid.pos));
                 }
             } 

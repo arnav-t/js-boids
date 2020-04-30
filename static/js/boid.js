@@ -3,6 +3,7 @@ import Vector from './vector.js';
 export default class Boid {
     constructor (init_pos, docroot) {
         this.pos = init_pos;
+        this.lifetime = Math.floor(Math.random()*1000);
         this.vel = new Vector(Math.random()*10 - 5, Math.random()*10 - 5);
         this._element = docroot.createElement('div');
         this._element.classList.add('boid');
