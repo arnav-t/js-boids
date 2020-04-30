@@ -3,10 +3,12 @@ import Vector from './vector.js';
 
 export default class BoidSystem {
     constructor(docroot) {
-        this.flock_time_ratio = 0.95;
-        this.tickrate = 20;
+        this.flock_time_ratio = 0.80;
+        this.tick_rate = 20;
         this.flock_radius = 200;
-        this.boid_radius = 30;
+        this.boid_radius = 25;
+        this.wall_force = 0.2;
+        this.wall_boundary = 80;
         this.boids = [];
         this.mouse = new Vector();
         this._mouse_el = docroot.getElementById('mouse');
@@ -62,7 +64,7 @@ export default class BoidSystem {
             boid.add_vel();
             boid.draw();
         }
-        setTimeout(this.tick.bind(this), this.tickrate);
+        setTimeout(this.tick.bind(this), this.tick_rate);
     }
     chase_mouse(boid) {
         let mf = new Vector();
@@ -117,17 +119,17 @@ export default class BoidSystem {
         return fv;
     }
     bound(boid) {
-        if (boid.pos.x > window.innerWidth) {
-            boid.vel.x = -2.0;
+        if (boid.pos.x > window.innerWidth - this.wall_boundary - this.boid_radius/2) {
+            boid.vel.x += -this.wall_force;
         }
-        else if (boid.pos.x < 0) {
-            boid.vel.x = +2.0;
+        else if (boid.pos.x < this.wall_boundary) {
+            boid.vel.x += +this.wall_force;
         }
-        if (boid.pos.y > window.innerHeight) {
-            boid.vel.y = -2.0;
+        if (boid.pos.y > window.innerHeight - this.wall_boundary - this.boid_radius/2) {
+            boid.vel.y += -this.wall_force;
         }
-        else if (boid.pos.y < 0) {
-            boid.vel.y = +2.0;
+        else if (boid.pos.y < this.wall_boundary) {
+            boid.vel.y += +this.wall_force;
         }
     }
 }
