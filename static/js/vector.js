@@ -8,7 +8,11 @@ export default class Vector {
         this.y *= scalar;
     }
     magnitude() {
-        return Math.sqrt(this.x*this.x + this.y*this.y);
+        // Euclidean distance
+        //return Math.sqrt(this.x*this.x + this.y*this.y);
+
+        // Manhattan distance
+        return Math.abs(this.x) + Math.abs(this.y);
     }
     static add(a, b) {
         return new this(a.x + b.x, a.y + b.y);
@@ -17,6 +21,10 @@ export default class Vector {
         return new this(a.x - b.x, a.y - b.y);
     }
     static distance(a, b) {
-        return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        // Euclidiean distance
+        //return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+        
+        // Manhattan distance
+        return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
     }
 }

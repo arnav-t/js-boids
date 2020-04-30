@@ -31,7 +31,7 @@ export default class BoidSystem {
         for (let boid of this.boids) {
             // Chase the mouse
             let mf = this.chase_mouse(boid);
-            mf.mul(1/200.0);
+            mf.mul(1/800.0);
             boid.update_vel = mf;
 
             // Move towards percieved center
