@@ -29,6 +29,7 @@ export default class BoidSystem {
         this.boids.push(boid);
     }
     tick() {
+        let frame_start = performance.now();
         for (let boid of this.boids) {
             // Chase the mouse
             let mf = this.chase_mouse(boid);
@@ -64,7 +65,8 @@ export default class BoidSystem {
             boid.add_vel();
             boid.draw();
         }
-        setTimeout(this.tick.bind(this), this.tick_rate);
+        let elapsed_time = performance.now() - frame_start;
+        setTimeout(this.tick.bind(this), elapsed_time < this.tick_rate ? this.tick_rate - elapsed_time : 0);
     }
     chase_mouse(boid) {
         let mf = new Vector();
